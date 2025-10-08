@@ -28,12 +28,9 @@ require "csv"
 Product.destroy_all
 Category.destroy_all
 
-csv_file = Rails.root.join("products.csv")
-csv_data = CSV.read(csv_file)
+csv_file = Rails.root.join("db", "products.csv")
 
-products = CSV.parse(csv_data, headers: true)
-
-products.each do |row|
+CSV.foreach(csv_file, headers: true) do |row|
   category_name = row["category"]
   category = Category.find_or_create_by(name: category_name)
 
@@ -41,7 +38,7 @@ products.each do |row|
     title: row["name"],
     description: row["description"],
     price: row["price"].to_f,
-    stock_quantity: row["stock_quantity"].to_i,
+    stock_quantity: row["stock quantity"].to_i,
     category: category
   )
 end
